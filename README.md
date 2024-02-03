@@ -125,11 +125,11 @@ torchrun --nproc_per_node 8 finetuning.py \
          --output_dir ./checkpoint/
 ```
 
-Note: after running this code, if you are getting an error something like "[17:11:47.344548] OSError: AF_UNIX path too long" then go to this path (../anaconda3/envs/llama_adapter/lib/python3.10/multiprocessing/connection.py") according to your configuration. Please note that "/python3.10/" might vary according to your configuration to check properly. During error it will show the path "connection.py" and you can directly use that path. 
+Note: after running this code, if you are getting an error something like "[17:11:47.344548] OSError: AF_UNIX path too long" then go to this path (../anaconda3/envs/llama_adapter/lib/python3.10/multiprocessing/connection.py") according to your configuration. Please note that "/python3.10/" might vary according to your configuration, so check properly. By the way, during this error, it will show the path to "connection.py". You can directly copy that path. 
 
 In connection.py file, find the following code (line number between 550-650)
 
-...bash
+...
             self._socket.bind(address)
             self._socket.listen(backlog)
             self._address = self._socket.getsockname()
