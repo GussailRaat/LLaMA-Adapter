@@ -129,29 +129,23 @@ Note: after running this code, if you are getting an error something like "[17:1
 
 In connection.py file, find the following code (line number between 550-650)
 
-...
-            self._socket.bind(address)
-            self._socket.listen(backlog)
-            self._address = self._socket.getsockname()
-        except OSError:
-            self._socket.close()
-            raise
-...
+```bash
+  self._socket.bind(address)
+  self._socket.listen(backlog)
+  self._address = self._socket.getsockname()
+```
 
 Then, replace this with this code
 
-...bash
-            relative_path = os.path.relpath(address, os.path.basename(os.getcwd()))
-            if relative_path.startswith("../"):
-                address = os.path.relpath(address, os.path.basename(os.getcwd())).split('../')[-1]
+```bash
+relative_path = os.path.relpath(address, os.path.basename(os.getcwd()))
+if relative_path.startswith("../"):
+    address = os.path.relpath(address, os.path.basename(os.getcwd())).split('../')[-1]
 
-            self._socket.bind(address)
-            self._socket.listen(backlog)
-            self._address = self._socket.getsockname()
-        except OSError:
-            self._socket.close()
-            raise
-...
+self._socket.bind(address)
+self._socket.listen(backlog)
+self._address = self._socket.getsockname()
+```
 
 ## Comparison with Other Methods
 
