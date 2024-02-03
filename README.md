@@ -101,6 +101,15 @@ torchrun --nproc_per_node 1 example.py \
          --adapter_path $ADAPTER_PATH
 ```
 
+Note: as in my Linux configuration $TARGET_FOLDER is not giving the path from "TARGET_FOLDER" instead it is giving an error that no file exists. So, give a path like this "./TARGET_FOLDER/model_size". As I am using a model size of 7B, the, complete path will be:
+
+```bash
+CUDA_VISIBLE_DEVICES=3 torchrun --nproc_per_node 1 example.py \
+                                --ckpt_dir ./TARGET_FOLDER/7B \
+                                --tokenizer_path ./TARGET_FOLDER/tokenizer.model \
+                                --adapter_path ./ADAPTER_PATH
+```
+
 ## Training
 
 We release the simple fine-tuning code of LLaMA-Adapter on LLaMA-7B model at [here](alpaca_finetuning_v1), which is for effortless reproduction with minimal dependencies. We will soon release the fine-tuning code for LLaMA-65B and multi-model LLaMA-Adapter.
@@ -114,6 +123,26 @@ torchrun --nproc_per_node 8 finetuning.py \
          --model Llama7B_adapter \
          --llama_model_path $TARGET_FOLDER/ \
          --data_path $DATA_PATH/alpaca_data.json \
+         --adapter_layer 30 \
+         --adapter_len 10 \
+         --max_seq_len 512 \
+         --batch_size 4 \
+         --epochs 5 \
+         --warmup_epochs 2 \
+         --blr 9e-3 \
+         --weight_decay 0.02 \
+         --output_dir ./checkpoint/
+```
+
+Please note that my Linx configuration is not taking the path from $DATA_PATH, so the new command will be according to my configuration:
+
+```bash
+cd alpaca_finetuning_v1
+
+torchrun --nproc_per_node 8 finetuning.py \
+         --model Llama7B_adapter \
+         --llama_model_path $(pwd)/../TARGET_FOLDER/ \
+         --data_path $(pwd)/../DATA_PATH/alpaca_data.json \
          --adapter_layer 30 \
          --adapter_len 10 \
          --max_seq_len 512 \
